@@ -1,0 +1,17 @@
+ai-demo-manager (1.0.2) bookworm; urgency=medium
+
+  * Add vsr-demo-gradio, real-esrgan-gradio and language switch button
+
+ -- Cix Technology Group Co., Ltd <https://www.cixtech.com>  Tue, 1 Apr 2025 20:25:38 +0800
+
+ai-demo-manager (1.0.1) bookworm; urgency=medium
+
+  * Add pic-query-cn demo
+
+ -- Cix Technology Group Co., Ltd <https://www.cixtech.com>  Mon, 17 Mar 2025 20:25:38 +0800
+
+ai-demo-manager (1.0.0) bookworm; urgency=medium
+
+  * Init ai-demo-manager
+
+ -- Cix Technology Group Co., Ltd <https://www.cixtech.com>  Tue, 21 Jan 2025 17:51:43 +0800

@@ -1,0 +1,17 @@
+cix-noe-umd (1.1.1) bookworm; urgency=medium
+
+  * Build libnoe python lib with symbols hidden
+
+ -- Cix Technology Group Co., Ltd <https://www.cixtech.com>  Wed, 02 Apr 2025 00:52:26 +0800
+
+cix-noe-umd (1.1.0) bookworm; urgency=medium
+
+  * Build libnoe python lib for python3.11 and python3.12
+
+ -- Cix Technology Group Co., Ltd <https://www.cixtech.com>  Sun, 30 Mar 2025 23:06:58 +0800
+
+cix-noe-umd (1.0.0) bookworm; urgency=medium
+
+  * Init cix-noe-umd
+
+ -- Cix Technology Group Co., Ltd <https://www.cixtech.com>  Tue, 21 Jan 2025 17:51:43 +0800
