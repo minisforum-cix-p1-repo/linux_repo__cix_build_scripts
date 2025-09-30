@@ -6,6 +6,8 @@
 #  and contain its proprietary and confidential information.
 #
 
+GITHUB_EXT_URL="https://api.github.com/repos/minisforum-cix-p1-repo/ext/releases"
+
 PARALLEL_GROUP="all"
 BUILD_MODE="release"
 PLATFORM="cix"
@@ -195,15 +197,57 @@ function download_binary_files() {
 }
 
 function updateres() {
-    local _nexus="$NEXUS_SITE"
-    if [[ "${_nexus}" != "" ]]; then
-        if [[ "${_nexus}" != "sh" ]]; then
-            _nexus="${_nexus}-"
-        else
-            _nexus="zj-"
+    cd "${PATH_ROOT}/build-scripts"
+    local githubTag="$(git remote -v | grep "github.com")X"
+    cd -
+    if [[ "${githubTag}" != "X" ]]; then
+        if [[ ! -e "${PATH_ROOT}/ext_7z" ]]; then
+            mkdir "${PATH_ROOT}/ext_7z"
         fi
+        curl ${GITHUB_EXT_URL} | jq ".[] | select(.tag_name == \"${EX_VERSION}\") | .assets" > "${PATH_ROOT}/ext_7z/result.json"
+        cat "${PATH_ROOT}/ext_7z/result.json" | jq '.[].browser_download_url' | while read -r url; do
+            url=$(echo $url | sed 's/^"\(.*\)"$/\1/')
+            file="${PATH_ROOT}/ext_7z/$(basename ${url})"
+            sha256_remote=$(cat "${PATH_ROOT}/ext_7z/result.json" | jq ".[] | select(.browser_download_url == \"${url}\") | .digest" | awk -F ":" '{print $2}' | awk -F '"' '{print $1}')
+            for i in {1..10}; do
+                sha256=""
+                if [[ -e "${file}" ]]; then
+                    sha256=$(sha256sum ${file} | awk '{print $1}')
+                fi
+                if [[ "${sha256}" == "${sha256_remote}" ]]; then
+                    break
+                else
+                    echo "download $url -> ${file}"
+                    wget -c -O "${file}" --no-check-certificate "${url}"
+                    sleep 1
+                fi
+            done
+        done
+        if [[ -e "${PATH_ROOT}/ext_7z/cix_ext.7z.001" ]]; then
+            cd "${PATH_ROOT}/ext_7z/"
+            if [[ ! -e "${PATH_ROOT}/ext_7z/ext" ]]; then
+                7z x cix_ext.7z.001
+            fi
+            if [[ -e "${PATH_ROOT}/ext_7z/ext" ]] && [[ ! -e "${PATH_ROOT}/ext" ]]; then
+                mv "${PATH_ROOT}/ext_7z/ext" "${PATH_ROOT}/ext"
+            fi
+            cd -
+        fi
+        if [[ ! -e "${PATH_ROOT}/ext" ]]; then
+            echo -e "${RED}Error: resources (ext) are absent. please retry this step.${NORMAL}"
+            exit 1
+        fi
+    else
+        local _nexus="$NEXUS_SITE"
+        if [[ "${_nexus}" != "" ]]; then
+            if [[ "${_nexus}" != "sh" ]]; then
+                _nexus="${_nexus}-"
+            else
+                _nexus="zj-"
+            fi
+        fi
+        download_binary_files "https://${_nexus}artifacts.cixtech.com" "${EX_CUSTOMER}" "${EX_PROJECT}" "${EX_VERSION}" "${PATH_ROOT}/ext" ${EX_NEXUS_USER} ${EX_NEXUS_PASS}
     fi
-    download_binary_files "https://${_nexus}artifacts.cixtech.com" "${EX_CUSTOMER}" "${EX_PROJECT}" "${EX_VERSION}" "${PATH_ROOT}/ext" ${EX_NEXUS_USER} ${EX_NEXUS_PASS}
 }
 
 #show help

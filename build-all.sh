@@ -56,13 +56,6 @@ do_clean() {
 }
 
 if [[ ! -e "${PATH_ROOT}/ext" ]]; then
-    cd "${PATH_ROOT}/build-scripts"
-    if [[ "$(git remote -v | grep "github.com")X" != "X" ]]; then
-        echo -e "${RED}Error: resources (ext) are absent. please download them from github first.${NORMAL}"
-        exit 1
-    fi
-    cd -
-
     source "${PATH_ROOT}/build-scripts/envtool.sh"
     export EX_CUSTOMER="miniscloud"
     export EX_PROJECT="pc001"
