@@ -66,7 +66,7 @@ if [[ ! -e "${PATH_ROOT}/ext" ]]; then
     source "${PATH_ROOT}/build-scripts/envtool.sh"
     export EX_CUSTOMER="miniscloud"
     export EX_PROJECT="pc001"
-    export EX_VERSION="202509"
+    export EX_VERSION="202510"
     updateres
 fi
 

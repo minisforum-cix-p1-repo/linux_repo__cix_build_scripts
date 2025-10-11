@@ -713,6 +713,7 @@ useradd -m -G sudo mini
 echo mini:mini | chpasswd
 usermod -a -G users,cdrom,floppy,audio,dip,video,plugdev,netdev,bluetooth mini -s /bin/bash
 sed -i 's/cix-localhost/mini-localhost/g' /etc/hosts
+sed -i 's/cix-localhost/mini-localhost/g' /etc/hostname
 sed -i 's/AutomaticLogin = cix/AutomaticLogin = mini/g' /etc/gdm3/daemon.conf
 "
             echo "${script}" > "${PATH_ROOT}/tmp/install.sh"

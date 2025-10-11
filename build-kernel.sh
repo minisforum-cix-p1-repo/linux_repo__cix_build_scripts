@@ -27,7 +27,7 @@ do_build() {
     local target
     case "$PLATFORM" in
     ("cix")
-        config_file="defconfig cix.config"
+        config_file="defconfig cix.config cix_redroid.config"
         if [[ "${DOCKER_MODE}" == "docker" ]]; then
             config_file="${config_file} cix_redroid.config"
         fi
