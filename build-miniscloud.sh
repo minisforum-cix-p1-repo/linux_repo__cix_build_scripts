@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#  Copyright 2024-2025 Cix Technology Group Co., Ltd.
+#  Copyright 2024-2026 Cix Technology Group Co., Ltd.
 #  All Rights Reserved.
 #
 #  The following programs are the sole property of Cix Technology Group Co., Ltd.,
@@ -66,7 +66,7 @@ if [[ ! -e "${PATH_ROOT}/ext" ]]; then
     source "${PATH_ROOT}/build-scripts/envtool.sh"
     export EX_CUSTOMER="miniscloud"
     export EX_PROJECT="pc001"
-    export EX_VERSION="202510.1"
+    export EX_VERSION="202603"
     updateres
 fi
 

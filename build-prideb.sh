@@ -101,9 +101,6 @@ insmod /lib/modules/$linux_version/kernel/net/netfilter/nf_conntrack.ko
 insmod /lib/modules/$linux_version/kernel/net/netfilter/nf_nat.ko
 insmod /lib/modules/$linux_version/kernel/net/netfilter/xt_MASQUERADE.ko
 
-#Install intel ice pcie network driver
-modprobe ice
-
 ln -s /dev/dma_heap/reserved /dev/dma_heap/linux,cma
 
 if [[ ! -s  /etc/machine-id ]]; then
