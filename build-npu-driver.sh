@@ -11,14 +11,23 @@ DEPENDENT_MODULES="build-kernel.sh"
 
 readonly DO_DESC_build="build npu driver and embed into debian system"
 do_build() {
-    pkg_Name="cix-npu-driver"
-    if [[ $(check_compile "${PATH_ROOT}/component/cix_opensource/npu/npu_driver" "" "${PATH_DEB}/${pkg_Name}_*.deb") == "false" ]]; then
-        return 0
-    fi
+# build deb package
+pkg_Name="cix-npu-driver"
+build_deb_dir=${PATH_OUT_DEB_PACKAGES}/${pkg_Name}
+if [[ $(check_compile "${PATH_ROOT}/component/cix_opensource/npu/npu_driver" "" "{PATH_DEB}/${pkg_Name}_*.deb") == "false" ]]; then
+    return 0
+fi
+rm -rf ${build_deb_dir}
+install_dir=${build_deb_dir}/lib/modules/${linux_version}/extra
+dkms_src_dir=${build_deb_dir}/usr/src
+
+mkdir -p ${install_dir}
+mkdir -p ${dkms_src_dir}
+
 export COMPASS_DRV_BTENVAR_ARCH=arm64
 export COMPASS_DRV_BTENVAR_KMD_DIR=driver
 
-export COMPASS_DRV_BTENVAR_KMD_VERSION=5.10.0
+export COMPASS_DRV_BTENVAR_KMD_VERSION=5.11.0
 export COMPASS_DRV_BTENVAR_KPATH=${PATH_LINUX}
 export BUILD_AIPU_VERSION_KMD=BUILD_ZHOUYI_V3
 export BUILD_TARGET_PLATFORM_KMD=BUILD_PLATFORM_SKY1
@@ -31,12 +40,15 @@ echo -e "Build KMD..."
 make -j$PARALLELISM -C ${COMPASS_DRV_BTENVAR_KMD_DIR} ARCH=${COMPASS_DRV_BTENVAR_ARCH} CROSS_COMPILE=${CROSS_COMPILE} -j${PARALLELISM}
 
 if [ -f ${COMPASS_DRV_BTENVAR_KMD_DIR}/aipu.ko ]; then
-    # build deb package
-    build_deb_dir=${PATH_OUT_DEB_PACKAGES}/${pkg_Name}
-    rm -rf ${build_deb_dir}
-    install_dir=${build_deb_dir}/lib/modules/${linux_version}/extra
-    mkdir -p ${install_dir}
     cp ${COMPASS_DRV_BTENVAR_KMD_DIR}/aipu.ko ${install_dir}
+
+    pushd "${PATH_ROOT}/component/cix_opensource/npu/npu_driver/driver"
+    make clean || true
+    echo -e "Build KMD done."
+    popd
+
+    echo -e "Build DKMS package..."
+    cp -r ${COMPASS_DRV_BTENVAR_KMD_DIR} ${dkms_src_dir}/aipu-${COMPASS_DRV_BTENVAR_KMD_VERSION}
     create_cix_deb "${pkg_Name}"
     # finish build deb package
 fi

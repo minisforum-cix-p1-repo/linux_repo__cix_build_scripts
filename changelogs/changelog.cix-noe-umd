@@ -1,3 +1,33 @@
+cix-noe-umd (2.0.4) bookworm; urgency=medium
+
+  * Update postinst for noe-umd deb
+
+ -- Cix Technology Group Co., Ltd <https://www.cixtech.com>  Mon, 03 Nov 2025 19:43:43 +0800
+
+cix-noe-umd (2.0.3) bookworm; urgency=medium
+
+  * Support python3.13
+
+ -- Cix Technology Group Co., Ltd <https://www.cixtech.com>  Wed, 24 Sep 2025 16:45:32 +0800
+
+cix-noe-umd (2.0.2) bookworm; urgency=medium
+
+  * Update cross-compile head-file location
+
+ -- Cix Technology Group Co., Ltd <https://www.cixtech.com>  Mon, 15 Sep 2025 13:27:24 +0800
+
+cix-noe-umd (2.0.1) bookworm; urgency=medium
+
+  * Pack libnoe python binding as whl package
+
+ -- Cix Technology Group Co., Ltd <https://www.cixtech.com>  Tue, 01 Jul 2025 15:27:11 +0800
+
+cix-noe-umd (2.0.0) bookworm; urgency=medium
+
+  * Update noe based on r2p0 sdk
+
+ -- Cix Technology Group Co., Ltd <https://www.cixtech.com>  Tue, 03 Jun 2025 10:40:01 +0800
+
 cix-noe-umd (1.1.1) bookworm; urgency=medium
 
   * Build libnoe python lib with symbols hidden

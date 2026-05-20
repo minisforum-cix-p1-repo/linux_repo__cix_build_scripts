@@ -1,3 +1,21 @@
+cix-npu-driver (2.0.2) bookworm; urgency=medium
+
+  * Backport to ai nas project with k6.6.10
+
+ -- Cix Technology Group Co., Ltd <https://www.cixtech.com>  Wed, 03 Dec 2025 14:44:06 +0800
+
+cix-npu-driver (2.0.1) bookworm; urgency=medium
+
+  * Add dkms support
+
+ -- Cix Technology Group Co., Ltd <https://www.cixtech.com>  Mon, 23 Jun 2025 17:59:35 +0800
+
+cix-npu-driver (2.0.0) bookworm; urgency=medium
+
+  * Update to r2p0 sdk
+
+ -- Cix Technology Group Co., Ltd <https://www.cixtech.com>  Wed, 28 May 2025 09:44:59 +0800
+
 cix-npu-driver (1.0.0) bookworm; urgency=medium
 
   * Init cix-npu-driver

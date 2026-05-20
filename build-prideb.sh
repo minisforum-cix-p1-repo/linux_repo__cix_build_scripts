@@ -35,11 +35,48 @@ do_build() {
 
         #npu-noe-umd
         pkg_Name="cix-noe-umd"
-        if [[ -e "${PATH_OUT_PRIVATE_DEB_PACKAGES}/${pkg_Name}" ]]; then
-            rm -rf ${PATH_OUT_DEB_PACKAGES}/$pkg_Name
-            cp -r ${PATH_OUT_PRIVATE_DEB_PACKAGES}/${pkg_Name} ${PATH_OUT_DEB_PACKAGES}/$pkg_Name
-            create_cix_deb "$pkg_Name"
+        rm -rf ${PATH_OUT_DEB_PACKAGES}/$pkg_Name
+        cp -r ${PATH_OUT_PRIVATE_DEB_PACKAGES}/${pkg_Name} ${PATH_OUT_DEB_PACKAGES}/$pkg_Name
+        build_deb_dir=${PATH_OUT_DEB_PACKAGES}/$pkg_Name
+        if [[ ! -e $build_deb_dir/DEBIAN ]]; then
+            mkdir -p $build_deb_dir/DEBIAN
         fi
+
+cat > $build_deb_dir/DEBIAN/postinst <<-'EOF'
+#!/bin/sh
+set -e
+
+PIP_OPTIONS=""
+
+if command -v lsb_release >/dev/null 2>&1; then
+    os_name=$(lsb_release -is)
+    codename=$(lsb_release -c | awk '{print $2}')
+
+    # Ubuntu 24.04 (noble) 及以上、或其他 OS，一律加上 --break-system-packages
+    if [[ $os_name == "Ubuntu" ]]; then
+        if [[ $codename == "noble" ]] || [[ $codename == "oracular" ]] || [[ $codename == "plucky" ]]; then
+            PIP_OPTIONS="--break-system-packages"
+            echo "Detected Ubuntu ($codename), use --break-system-packages option"
+        else
+            echo "Detected Ubuntu ($codename), no option needed"
+        fi
+    else
+        PIP_OPTIONS="--break-system-packages"
+        echo "Detected $os_name ($codename), use --break-system-packages option"
+    fi
+else
+    echo "Unknown OS, use --break-system-packages by default"
+    PIP_OPTIONS="--break-system-packages"
+fi
+
+pip3 install /usr/share/cix/pypi/libnoe-*-py3-none-manylinux2014_aarch64.whl $PIP_OPTIONS
+pip3 install /usr/share/cix/pypi/noe_engine-*-py3-none-manylinux2014_aarch64.whl $PIP_OPTIONS
+
+exit 0
+EOF
+
+        chmod a+x $build_deb_dir/DEBIAN/postinst
+        create_cix_deb "$pkg_Name"
 
         #isp-umd
         pkg_Name="cix-isp-umd"

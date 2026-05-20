@@ -41,7 +41,7 @@ NC=${NC-\e[0m}
 
 EX_CUSTOMER="miniscloud"
 EX_PROJECT="pc001"
-EX_VERSION="202603"
+EX_VERSION="202604"
 EX_NEXUS_USER="svc.public"
 EX_NEXUS_PASS="svc.public"
 
